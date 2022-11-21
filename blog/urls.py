@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import home
-from .views import PostListView, UserPostListView
+from .views import PostListView, UserPostView
                 
 
 urlpatterns = [
@@ -8,6 +8,6 @@ urlpatterns = [
     # magát a PostListView-t nem lehet csak úgy odaadni, át kell convertálni view-vá, az as_view
     # segítségével
     path('', PostListView.as_view(), name="blog-home"),
-    path('user_posts/<str:username>', UserPostListView.as_view(), name='user-posts' )
+    path('user_posts/<str:username>', UserPostView.as_view(), name='user-posts')
 ]
 

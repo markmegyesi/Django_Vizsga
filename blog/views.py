@@ -18,13 +18,13 @@ class PostListView(ListView):
     ordering = ['-date_posted']
     paginate_by = 5
 
-class UserPostListView(ListView):
+class UserPostView(ListView):
     model = PostModel
     template_name = 'blog/user_posts.html'
     context_object_name = 'posts'
     paginate_by= 5
 
-    def get_queryset(self):
+    def get_queryset(self): 
         user_object = get_object_or_404(User, username=self.kwargs.get('username'))
         data = PostModel.objects.filter(author=user_object)
         return data
