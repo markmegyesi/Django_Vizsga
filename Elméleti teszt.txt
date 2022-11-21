@@ -1,0 +1,51 @@
+1. Kérdés: Milyen utasítással indítunk egy Django projectet?
+
+-django-admin startproject project_name
+
+2. Kérdés: Írd le a lépéseit, hogy hogyan juttatunk el adatot adatbázisból a böngészőig?
+-Views.py fájlban csinálunk egy viewt.
+-A viewba a modellen kersztül kikérjük a szükséges adatot, és visszaadjuk azt.
+pl.:
+class MyView(ListView):
+	model=MyModel
+	template_name = 'my_template.html'
+	context_object_name = 'data'
+vagy
+def my_view(request):
+	context={'data': MyModel.objects.all()}
+	return(render(request, 'my_template.html', context=context)
+-végül urls.py fájlban megcsináljuk az endpointot :
+path('/mypage', myview, name="my-page") vagy  path('/mypage', MyView.as_view(), name="my-page")
+
+3. Kérdés: Mire szolgál a models.py file?
+-Itt írjuk meg a létrehozandó táblák struktúrájt. Oszlopok neve, típusa, táblanév stb.
+
+4. Kérdés: Mi a szerepe a views.py filenak?
+-Az itt megírt view-k kommunikálnak Http requestekkel a front-enddel. Bejön a request , lefut egy logika (általában
+ valamilyen adatbázis művelet) és visszamegy az eredmény ha kell valamit visszaküldeni. 
+
+5. Kérdés: Írj egy pár gondolatot a fixturesökről. Mikor használjuk, miért van rájuk szükség. stb.
+-Olyan adatok amit a Django be tud tölteni egy táblába annak modeljén keresztül. Lehet JSON, YAML, vagy XML.
+ Tesztadatok vagy meglévő adatok tömeges bevitelére használható. django-admin loaddata paranccsal indítható. (megadható
+egy mappa is neki ha csak abból szeretnénk betölteni a fixture-öket.)
+6. Kérdés: Mire való a settings.py? Írj róla pár gondolatot.
+-A Django projektünk alapvető beállításait tudjuk itt módósítani illetve újakat hozzáadni.Pl.: template-ek mappája , 
+base mappa, appok "telepítése" stb.
+
+7. Kérdés: Hogyan hozok létre adatbázis táblát Djangoval? Írjatok le minden lépést!
+- models.py fájlban létrehozunk egy class-t amit a models.Model-ből (ezt beimportáljuk) származtatunk le :
+class MyModel(models.Model):
+- Ebben beállítjuk a paramétereket amiket akarunk pl.:oszlopok neve: my_column=models.TextField(max_length=500),
+a modellen belül ha létrehozunk egy Meta nevű class-t itt tudjuk beállítani a tábla nevét: db_table='my_table'
+-terminálba : python manage.py makemigrations
+-terminálba : python manage.py migrate
+
+8. Kérdés: Function based view-nál mire szolgál a request paraméter?
+-A Http requestet jelenti.
+
+9. Kérdés: Mit nevezünk applikációnak a Djangoban?
+-Minden olyan mappa amit django-admin startapp app_name paranccsal hozunk létre. Érdemes minden funkciónak vagy
+ logikailag összetartzó funkcióknak külön applikációt létrehozni.
+
+10. Kérdés: Mi az API?
+Egy olyan mechanizmus ami két komponens kommunikációját teszi lehetővé.
